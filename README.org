@@ -1,2 +1,176 @@
 * planck-presentation-2017
 A presentation on planck for the Utah Clojure meetup
+Matthew O. Smith
+December 2017
+* Clojure vs ClojureScript
+Planck is strictly ClojureScript
+(regardless of what I might say)
+* What is planck?
+- What I was expecting Clojure to be when I
+  first heard of it
+
+[[http://planck-repl.org/][Planck Guide]]
+
+- Planck is a stand-alone ClojureScript REPL
+  for macOS and Linux.
+
+- Planck launches instantly and is useful
+  for scripting.
+
+* How Planck Works
+
+- Enters the cljs.user namespace
+- Binds planck.core/*command-line-args*
+      to a seq of strings containing command
+      line args that appear after any main
+      option
+- Runs all init options in order
+- Calls a -main function or runs a repl
+      or script if requested
+
+* Main Options
+-m ns-name,     Call the -main function from a
+--main=ns-name  namespace with args
+
+-r, --repl      Run a repl
+
+path            Run a script from a file or resource
+
+-               Run a script from standard input
+
+-h, -?, --help  Print this help message and exit
+
+-l, --legal     Show legal info (licenses and copyrights)
+
+-V, --version   Show version and exit
+
+* REPL
+
+planck
+
+* Evaluate Expression
+
+#+BEGIN_SRC sh
+/usr/local/bin/planck -e "(def x 1)" -e "(+ x 2)"
+#+END_SRC
+
+#+RESULTS:
+| #'cljs.user/x |
+|             3 |
+
+* Shebang Scripts
+
+#+BEGIN_SRC sh
+#! /usr/local/bin/planck
+(println "Hello World!")
+#+END_SRC
+
+#+RESULTS:
+: Hello World!
+
+* Main functions
+
+m0smith/foo.cljs
+
+#+BEGIN_SRC clojure
+(ns m0smith.foo)
+(defn greet [name]
+  (println (str "Hello `" name "'!")))
+(defn -main [name]
+  (greet name))
+#+END_SRC
+#+BEGIN_SRC sh 
+/usr/local/bin/planck -c cljs -m m0smith.foo hamsters
+#+END_SRC
+#+RESULTS:
+: Hello `hamsters'!
+
+* Namespaces
+
+The following are all bundled with planck:
+
+|               |              |                       |
+| planck.core   | goog.Delay   | goog.Disposable       |
+| planck.repl   | goog.Promise | goog.Uri              |
+| planck.io     | goog.Timer   | goog.debug.Console    |
+| planck.shell  | goog.color   | goog.i18n             |
+| planck.http   | goog.date    | goog.json             |
+| goog.crypt    | goog.locale  | goog.structs          |
+| goog.Throttle | goog.format  | goog.spell.SpellCheck |
+| goog.math     | goog.string  | goog.text.LoremIpsum  |
+|               | goog.iter    | goog.labs.format.csv  |
+
+* planck.core
+
+[[http://planck-repl.org/planck-core.html][planck.core]]
+
+| Vars              | Functions        |               |
+| command-line-args | eval             | exit          |
+| err               | file-seq         | line-seq      |
+| in                | intern           | read-password |
+| planck-version    | ns-resolve       | slurp         |
+|                   | init-empty-state | read-line     |
+|                   | resolve          | spit          |
+|                   | with-open        |               |
+
+* planck.repl
+
+[[http://planck-repl.org/planck-repl.html][planck.repl]]
+
+apropos
+dir
+doc
+find-doc
+get-arglists
+pst  - print stack trace
+source
+
+* planck.io
+
+[[http://planck-repl.org/planck-io.html][planck.io]]
+
+| as-file           | as-url             |
+| delete-file       | directory?         |
+| file              | file?              |
+| file-attributes   | input-stream       |
+| make-input-stream | make-output-stream |
+| make-reader       | make-writer        |
+| output-stream     | reader             |
+| writer            |                    |
+
+* planck.shell
+
+[[http://planck-repl.org/planck-shell.html][planck.shell]]
+
+sh
+sh-async
+with-sh-dir
+with-sh-env
+
+* planck.http
+
+[[http://planck-repl.org/planck-http.html][planck.http]]
+
+get
+post
+
+* goog.math
+[[https://google.github.io/closure-library/api/goog.math.html][goog.math]]
+
+includes:
+- randomInt
+- angle
+- sum
+- toRadians
+
+* goog.date
+
+[[https://google.github.io/closure-library/api/goog.date.html][goog.date]]
+
+Create, format and compare dates
+
+* goog.json
+
+[[https://google.github.io/closure-library/api/goog.json.html][goog.json]]
+
+Parse and format JSON text
